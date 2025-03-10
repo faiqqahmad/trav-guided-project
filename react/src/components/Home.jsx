@@ -1,14 +1,10 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import Home from './components/Home'
-import CharacterPage from './components/CharacterPage'
 import {useState, useEffect} from 'react'
+import {Link} from 'react-router-dom'
 
-function App() {
 
-  const [characters, setCharacters] = useState([])
-  const [planets , setPlanets] = useState([])
-  const [films, setFilms] = useState([])
+function Home() {
 
+    const [characters, setCharacters] = useState([])
     useEffect(() => {
     const getCharacters = async () => {
         const url = "http://localhost:4000/api/characters";
@@ -26,15 +22,20 @@ function App() {
     }
     getCharacters();
   }, []);
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/character/:id" element={<CharacterPage/>}/>
-      </Routes>
-    </Router>
-  )
+
+    return (
+        <>
+        <header>Star Wars Universe Lookup</header>
+        <ul>
+            {characters.map((obj)=> (
+                <li key={obj.id}>
+                    <Link to={"/character/" + obj.id}>{obj.name}</Link>
+                    </li>
+            ))}
+        </ul>
+        
+        </>
+    )
 }
 
-
-export default App
+export default Home
