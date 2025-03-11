@@ -4,21 +4,21 @@ import {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 
 
-function CharacterPage() {
+function PlanetPage() {
 
     const params = useParams()
 
-    const [character, setCharacter] = useState([])
+    const [planet, setPlanet] = useState({})
     const [films, setFilms] = useState([])
-    const [homeworld, setHomeworld] = useState("")
+    const [characters, setCharacters] = useState([])
 
     useEffect(() => {
         console.log("testing")
-    const getCharacter = async () => {
-        const url1 = "http://localhost:4000/api/characters/"+params.id;
-        const url2 = "http://localhost:4000/api/characters/"+params.id+"/films";
+    const getPlanet = async () => {
+        const url1 = "http://localhost:4000/api/planets/"+params.id;
+        const url2 = "http://localhost:4000/api/planets/"+params.id+"/films";
         const url3 = "http://localhost:4000/api/films";
-        let url4 = "http://localhost:4000/api/planet/"+character[0]?.homeworld;
+        const url4 = "http://localhost:4000/api/planets/"+params.id+"/characters";
         let filmIds = []
 
         try {
@@ -29,7 +29,7 @@ function CharacterPage() {
 
             const json = await response.json();
             console.log(json)
-            setCharacter(json)
+            setPlanet(json)
         } catch (error) {
             console.error(error.message);
         }
@@ -67,38 +67,32 @@ function CharacterPage() {
         }
 
          try {
-            url4 = "http://localhost:4000/api/planets/";
             const response = await fetch(url4);
             if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
             }
 
             const json = await response.json();
-            console.log(character[0]?.homeworld)
-            console.log(json)
-            console.log("testing above")
-            setHomeworld(json[0]?.name)
+            setCharacters(json)
         } catch (error) {
             console.error(error.message);
         }
     }
-    getCharacter();
+    getPlanet();
   }, []);
 
 
     return (
         <>
-        {character[0]?.name}
-        <p>{character[0]?.gender}</p>
-        <p>{character[0]?.skin_color}</p>
-        <p>{character[0]?.hair_color}</p>
-        <p>{character[0]?.height}</p>
-        <p>{character[0]?.eye_color}</p>
-        <p>{character[0]?.birth_year}</p>
-        <p>{character[0]?.mass}</p>
-        <p>
-            <Link to={"/planet/"+character[0]?.homeworld}>{homeworld}</Link>
-            </p>
+        {planet[0]?.climate}
+        <p>{planet[0]?.surface_water}</p>
+        <p>{planet[0]?.name}</p>
+        <p>{planet[0]?.diameter}</p>
+        <p>{planet[0]?.rotation_period}</p>
+        <p>{planet[0]?.terrain}</p>
+        <p>{planet[0]?.gravity}</p>
+        <p>{planet[0]?.orbital_period}</p>
+        <p>{planet[0]?.population}</p>
         <ul>
         {films.map( obj => (
             <li key={obj.id}>
@@ -106,8 +100,15 @@ function CharacterPage() {
                 </li>
         ))}
         </ul>
+        <ul>
+        {characters.map( obj => (
+            <li key={obj.id}>
+                <Link to={"/character/"+obj.id}>{obj.name}</Link>
+                </li>
+        ))}
+        </ul>
         </>
     )
 }
 
-export default CharacterPage
+export default PlanetPage
