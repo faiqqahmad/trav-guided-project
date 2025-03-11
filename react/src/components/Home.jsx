@@ -1,8 +1,10 @@
 import {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
+import Button from '@mui/material/Button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
-function Home() {
+function Home(props) {
 
     const [characters, setCharacters] = useState([])
     useEffect(() => {
@@ -25,15 +27,20 @@ function Home() {
 
     return (
         <>
-        <header>Star Wars Universe Lookup</header>
-        <ul>
-            {characters.map((obj)=> (
-                <li key={obj.id}>
-                    <Link to={"/character/" + obj.id}>{obj.name}</Link>
-                    </li>
-            ))}
-        </ul>
-        
+            <ThemeProvider theme={props.theme}>
+            <header>Star Wars Universe Lookup</header>
+            <ul style={{
+            listStyleType: 'none'
+            }}>
+                {characters.map((obj)=> (
+                    <li key={obj.id}>
+                        <Link to={"/characters/" + obj.id}>
+                        <Button variant='contained' sx={{ m: 0.5 }}>{obj.name}</Button>
+                        </Link>
+                        </li>
+                ))}
+            </ul>
+            </ThemeProvider>
         </>
     )
 }

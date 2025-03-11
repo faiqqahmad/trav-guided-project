@@ -4,8 +4,28 @@ import CharacterPage from './components/CharacterPage'
 import PlanetPage from './components/PlanetPage'
 
 import {useState, useEffect} from 'react'
+import FilmsPage from "./components/FilmsPage";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 function App() {
+
+  const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#151501', // Custom primary color
+    },
+    secondary: {
+      main: '#e1d816', // Custom secondary color
+    },
+    // background: {
+    //   default: '#f5f5f5', // Custom background color
+    // },
+    text: {
+      primary: '#e1d816', // Custom text color
+    },
+  },
+});
 
   const [characters, setCharacters] = useState([])
   const [planets , setPlanets] = useState([])
@@ -31,9 +51,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/character/:id" element={<CharacterPage/>}/>
-        <Route path="/planet/:id" element={<PlanetPage/>}/>
+        <Route path="/" element={<Home theme={theme}/>}/>
+        <Route path="/characters/:id" element={<CharacterPage theme={theme}/>}/>
+        <Route path="/planets/:id" element={<PlanetPage theme={theme}/>}/>
+        <Route path="/films/:id" element={<FilmsPage theme={theme}/>}/>
       </Routes>
     </Router>
   )

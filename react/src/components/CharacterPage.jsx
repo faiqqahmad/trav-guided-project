@@ -2,6 +2,7 @@
 import {useParams} from 'react-router-dom'
 import {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 function CharacterPage() {
@@ -28,7 +29,6 @@ function CharacterPage() {
             }
 
             const json = await response.json();
-            console.log(json)
             setCharacter(json)
         } catch (error) {
             console.error(error.message);
@@ -41,10 +41,7 @@ function CharacterPage() {
             }
 
             const json = await response.json();
-            console.log(json)
             filmIds = json.map((obj) => obj.film_id)
-            console.log(filmIds)
-            console.log("Film ids above")
         } catch (error) {
             console.error(error.message);
         }
@@ -56,11 +53,7 @@ function CharacterPage() {
             }
 
             const json = await response.json();
-            console.log(json)
-            console.log(json.map(obj => obj.id in filmIds))
             const filtered = json.filter( obj => filmIds.includes(obj.id))
-            console.log(filtered)
-            console.log("above is filtered")
             setFilms(filtered)
         } catch (error) {
             console.error(error.message);
@@ -74,9 +67,6 @@ function CharacterPage() {
             }
 
             const json = await response.json();
-            console.log(character[0]?.homeworld)
-            console.log(json)
-            console.log("testing above")
             setHomeworld(json[0]?.name)
         } catch (error) {
             console.error(error.message);
@@ -97,12 +87,12 @@ function CharacterPage() {
         <p>{character[0]?.birth_year}</p>
         <p>{character[0]?.mass}</p>
         <p>
-            <Link to={"/planet/"+character[0]?.homeworld}>{homeworld}</Link>
+            <Link to={"/planets/"+character[0]?.homeworld}>{homeworld}</Link>
             </p>
         <ul>
         {films.map( obj => (
             <li key={obj.id}>
-                <Link to={"/film/"+obj.id}>{obj.title}</Link>
+                <Link to={"/films/"+obj.id}>{obj.title}</Link>
                 </li>
         ))}
         </ul>
